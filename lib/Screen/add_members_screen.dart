@@ -14,7 +14,7 @@ class AddMembersScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Add",
+          "Added",
         ),
         actions: [
           TextButton(
