@@ -111,7 +111,9 @@ class _AudioState extends State<Audio> {
                         },
                         child: const Text(
                           "Submit",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     )
@@ -119,8 +121,10 @@ class _AudioState extends State<Audio> {
                 ),
               )
             : Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 40,
+                ),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,7 +186,9 @@ class _AudioState extends State<Audio> {
                               },
                               child: const Text(
                                 "Copy",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
@@ -192,7 +198,8 @@ class _AudioState extends State<Audio> {
                           Expanded(
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.black),
+                                backgroundColor: Colors.black,
+                              ),
                               onPressed: () {
                                 setState(() {
                                   data = "";
@@ -200,7 +207,9 @@ class _AudioState extends State<Audio> {
                               },
                               child: const Text(
                                 "Back",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),

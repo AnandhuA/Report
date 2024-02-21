@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:report/Functions/function.dart';
 import 'package:report/Models/model.dart';
+import 'package:report/Widget/reason.dart';
 import 'package:report/Widget/time.dart';
 
 class Section extends StatefulWidget {
@@ -53,7 +54,7 @@ class _SectionState extends State<Section> {
                       const SizedBox(
                         height: 10,
                       ),
-                      TimePickerWidegt(),
+                      const TimePickerWidegt(),
                       const SizedBox(
                         height: 10,
                       ),
@@ -163,118 +164,9 @@ class _SectionState extends State<Section> {
                                         ),
                                       ),
                                       !membersList.value[index].check
-                                          ? Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      const Text("Absent"),
-                                                      Radio(
-                                                        value: "Absent",
-                                                        groupValue:
-                                                            selectedRadio,
-                                                        onChanged: (val) async {
-                                                          if (val != null) {
-                                                            await addMembers(
-                                                              members:
-                                                                  MembersModel(
-                                                                id: membersList
-                                                                    .value[
-                                                                        index]
-                                                                    .id,
-                                                                member:
-                                                                    membersList
-                                                                        .value[
-                                                                            index]
-                                                                        .member,
-                                                                check: membersList
-                                                                    .value[
-                                                                        index]
-                                                                    .check,
-                                                                reason: val,
-                                                              ),
-                                                            );
-                                                            await refresh();
-                                                          }
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      const Text("Review"),
-                                                      Radio(
-                                                        value: "Review",
-                                                        groupValue:
-                                                            selectedRadio,
-                                                        onChanged: (val) async {
-                                                          if (val != null) {
-                                                            await addMembers(
-                                                              members:
-                                                                  MembersModel(
-                                                                id: membersList
-                                                                    .value[
-                                                                        index]
-                                                                    .id,
-                                                                member:
-                                                                    membersList
-                                                                        .value[
-                                                                            index]
-                                                                        .member,
-                                                                check: membersList
-                                                                    .value[
-                                                                        index]
-                                                                    .check,
-                                                                reason: val,
-                                                              ),
-                                                            );
-                                                            await refresh();
-                                                          }
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      const Text("No Reason"),
-                                                      Radio(
-                                                        value: "No Reason",
-                                                        groupValue:
-                                                            selectedRadio,
-                                                        onChanged: (val) async {
-                                                          if (val != null) {
-                                                            await addMembers(
-                                                              members:
-                                                                  MembersModel(
-                                                                id: membersList
-                                                                    .value[
-                                                                        index]
-                                                                    .id,
-                                                                member:
-                                                                    membersList
-                                                                        .value[
-                                                                            index]
-                                                                        .member,
-                                                                check: membersList
-                                                                    .value[
-                                                                        index]
-                                                                    .check,
-                                                                reason: val,
-                                                              ),
-                                                            );
-                                                            await refresh();
-                                                          }
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
+                                          ? Reason(
+                                              index: index,
+                                              selectedRadio: selectedRadio,
                                             )
                                           : const SizedBox(),
                                       const Divider()

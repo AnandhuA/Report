@@ -7,7 +7,11 @@ class Reason extends StatelessWidget {
   final String selectedRadio;
   final int index;
 
-  const Reason({super.key, required this.index, required this.selectedRadio});
+  const Reason({
+    super.key,
+    required this.index,
+    required this.selectedRadio,
+  });
 
   @override
   Widget build(BuildContext context) {
