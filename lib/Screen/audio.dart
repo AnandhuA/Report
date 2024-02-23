@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:report/Functions/function.dart';
-import 'package:report/Models/model.dart';
-import 'package:report/Widget/reason.dart';
+import 'package:report/Widget/audio_report.dart';
+import 'package:report/Widget/copy.dart';
+import 'package:report/Widget/list_tile.dart';
 
 class Audio extends StatefulWidget {
   const Audio({super.key});
@@ -38,58 +38,9 @@ class _AudioState extends State<Audio> {
                             itemBuilder: (context, index) {
                               String selectedRadio =
                                   membersList.value[index].reason;
-                              return Column(
-                                children: [
-                                  ListTile(
-                                    onTap: () {
-                                      setState(() {
-                                        membersList.value[index].check =
-                                            !membersList.value[index].check;
-                                      });
-                                    },
-                                    leading: CircleAvatar(
-                                      backgroundColor:
-                                          membersList.value[index].check
-                                              ? Colors.green.shade200
-                                              : Colors.red.shade200,
-                                      child: Text(
-                                        membersList.value[index].member[0],
-                                      ),
-                                    ),
-                                    title: Text(
-                                      membersList.value[index].member,
-                                      style: TextStyle(
-                                        color: membersList.value[index].check
-                                            ? Colors.black
-                                            : Colors.red.shade500,
-                                      ),
-                                    ),
-                                    trailing: Checkbox(
-                                      activeColor: Colors.green,
-                                      value: membersList.value[index].check,
-                                      onChanged: (value) async {
-                                        if (value != null) {
-                                          await addMembers(
-                                            members: MembersModel(
-                                              id: membersList.value[index].id,
-                                              member: membersList
-                                                  .value[index].member,
-                                              check: value,
-                                            ),
-                                          );
-                                          await refresh();
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                  !membersList.value[index].check
-                                      ? Reason(
-                                          index: index,
-                                          selectedRadio: selectedRadio,
-                                        )
-                                      : const SizedBox(),
-                                  const Divider()
-                                ],
+                              return ListTileWidget(
+                                index: index,
+                                selectedRadio: selectedRadio,
                               );
                             },
                           );
@@ -103,7 +54,8 @@ class _AudioState extends State<Audio> {
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black),
+                          backgroundColor: Colors.black,
+                        ),
                         onPressed: () {
                           setState(() {
                             data = "data";
@@ -127,46 +79,8 @@ class _AudioState extends State<Audio> {
                 ),
                 child: SingleChildScrollView(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("🎙Audio  Report🎙️"),
-                      Text("💻 Batch : ${batchList[0].batch}"),
-                      Text("📆 $date"),
-                      const Text("   "),
-                      const Text("🧑‍✈️Coordinators"),
-                      Text("🧑‍💻${list[0].one}"),
-                      Text("👨‍💻${list[0].two}"),
-                      const Text("   "),
-                      const Text("-------------------------------------"),
-                      const Text("   "),
-                      const Text("Submitted"),
-                      const Text("   "),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: membersList.value.length,
-                        itemBuilder: (context, index) {
-                          return membersList.value[index].check
-                              ? Text("✅${membersList.value[index].member}")
-                              : const SizedBox();
-                        },
-                      ),
-                      const Text("     "),
-                      const Text("Not Submitted"),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: membersList.value.length,
-                        itemBuilder: (context, index) {
-                          return !membersList.value[index].check
-                              ? membersList.value[index].reason == "No Reason"
-                                  ? Text("❌${membersList.value[index].member}")
-                                  : Text(
-                                      "❌${membersList.value[index].member} (${membersList.value[index].reason})",
-                                    )
-                              : const SizedBox();
-                        },
-                      ),
+                      AudioReport(date: date),
                       const SizedBox(
                         height: 20,
                       ),
@@ -177,10 +91,15 @@ class _AudioState extends State<Audio> {
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.black),
                               onPressed: () {
-                                _copyToClipboard(data);
+                                copyToClipboardAudio(
+                                  text: data,
+                                  date: date,
+                                );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Text copied to clipboard'),
+                                    content: Text(
+                                      'Text copied to clipboard',
+                                    ),
                                   ),
                                 );
                               },
@@ -221,50 +140,5 @@ class _AudioState extends State<Audio> {
               ),
       ),
     );
-  }
-
-  void _copyToClipboard(String text) {
-    List<String> lines = [
-      '🎙Audio Submission Report🎙️',
-      '💻 Batch : ${batchList[0].batch}',
-      '📆 $date',
-      '‎ ',
-      '🧑‍✈️Coordinators',
-      '‎ ',
-      '🧑‍💻 ${list[0].one}',
-      '👨‍💻${list[0].two}',
-      '-------------------------------------',
-      '‎ ',
-      'Submitted',
-      '‎ ',
-    ];
-
-    for (int i = 0; i < membersList.value.length; i++) {
-      if (membersList.value[i].check == true) {
-        lines.add('✅ ${membersList.value[i].member}');
-      }
-    }
-
-    lines.addAll([
-      '‎ ',
-      '‎ '
-          'Not Submitted',
-      '‎ ',
-    ]);
-
-    for (int i = 0; i < membersList.value.length; i++) {
-      if (membersList.value[i].check == false) {
-        if (membersList.value[i].reason == "No Reason") {
-          lines.add('❌ ${membersList.value[i].member}');
-        } else {
-          lines.add(
-              '❌ ${membersList.value[i].member} (${membersList.value[i].reason})');
-        }
-      }
-    }
-
-    String finalText = lines.join('\n');
-
-    Clipboard.setData(ClipboardData(text: finalText));
   }
 }

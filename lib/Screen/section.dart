@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:report/Functions/function.dart';
-import 'package:report/Models/model.dart';
-import 'package:report/Widget/reason.dart';
+import 'package:report/Widget/copy.dart';
+import 'package:report/Widget/list_tile.dart';
+import 'package:report/Widget/section_report.dart';
 import 'package:report/Widget/time.dart';
 
 class Section extends StatefulWidget {
@@ -48,7 +48,9 @@ class _SectionState extends State<Section> {
                         controller: venueController,
                         decoration: const InputDecoration(
                           hintText: "Venue",
-                          icon: Icon(Icons.place_outlined),
+                          icon: Icon(
+                            Icons.place_outlined,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -68,7 +70,9 @@ class _SectionState extends State<Section> {
                         controller: activityController,
                         decoration: const InputDecoration(
                           hintText: "Activity",
-                          icon: Icon(Icons.topic_outlined),
+                          icon: Icon(
+                            Icons.topic_outlined,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -85,7 +89,9 @@ class _SectionState extends State<Section> {
                         maxLines: 4,
                         decoration: const InputDecoration(
                           hintText: "Report",
-                          icon: Icon(Icons.note_add_outlined),
+                          icon: Icon(
+                            Icons.note_add_outlined,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -101,7 +107,9 @@ class _SectionState extends State<Section> {
                         controller: nameController,
                         decoration: const InputDecoration(
                           hintText: "Reported by",
-                          icon: Icon(Icons.person_outline),
+                          icon: Icon(
+                            Icons.person_outline,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -117,60 +125,9 @@ class _SectionState extends State<Section> {
                                 (index) {
                                   String selectedRadio =
                                       membersList.value[index].reason;
-                                  return Column(
-                                    children: [
-                                      ListTile(
-                                        onTap: () {
-                                          setState(() {
-                                            membersList.value[index].check =
-                                                !membersList.value[index].check;
-                                          });
-                                        },
-                                        leading: CircleAvatar(
-                                          backgroundColor:
-                                              membersList.value[index].check
-                                                  ? Colors.green.shade200
-                                                  : Colors.red.shade200,
-                                          child: Text(
-                                            membersList.value[index].member[0],
-                                          ),
-                                        ),
-                                        title: Text(
-                                          membersList.value[index].member,
-                                          style: TextStyle(
-                                            color:
-                                                membersList.value[index].check
-                                                    ? Colors.black
-                                                    : Colors.red.shade500,
-                                          ),
-                                        ),
-                                        trailing: Checkbox(
-                                          activeColor: Colors.green,
-                                          value: membersList.value[index].check,
-                                          onChanged: (value) async {
-                                            if (value != null) {
-                                              await addMembers(
-                                                members: MembersModel(
-                                                  id: membersList
-                                                      .value[index].id,
-                                                  member: membersList
-                                                      .value[index].member,
-                                                  check: value,
-                                                ),
-                                              );
-                                              await refresh();
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                      !membersList.value[index].check
-                                          ? Reason(
-                                              index: index,
-                                              selectedRadio: selectedRadio,
-                                            )
-                                          : const SizedBox(),
-                                      const Divider()
-                                    ],
+                                  return ListTileWidget(
+                                    index: index,
+                                    selectedRadio: selectedRadio,
                                   );
                                 },
                               ),
@@ -182,7 +139,8 @@ class _SectionState extends State<Section> {
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black),
+                            backgroundColor: Colors.black,
+                          ),
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               if (getSelectedTime().isNotEmpty) {
@@ -201,7 +159,9 @@ class _SectionState extends State<Section> {
                           },
                           child: const Text(
                             "Submit",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       )
@@ -211,57 +171,14 @@ class _SectionState extends State<Section> {
               )
             : SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("📃 Session Report"),
-                    const Text(" "),
-                    Text("📅 $date"),
-                    Text("⏰ Time : ${getSelectedTime()}"),
-                    Text("📍 Venue : ${venueController.text}"),
-                    const Text(" "),
-                    Text(" Batch : ${batchList[0].batch}"),
-                    const Text(" "),
-                    const Text("🧑‍✈️Coordinators"),
-                    const Text("   "),
-                    Text("🧑‍💻${list[0].one}"),
-                    Text("👨‍💻${list[0].two}"),
-                    const Text("-------------------------------------"),
-                    Text("Activity : ${activityController.text}"),
-                    const Text("   "),
-                    Text(reportController.text),
-                    const Text(" "),
-                    const Text("🙋‍♂️Participants:"),
-                    const Text("   "),
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: membersList.value.length,
-                      itemBuilder: (context, index) {
-                        return membersList.value[index].check
-                            ? Text("✅${membersList.value[index].member}")
-                            : const SizedBox();
-                      },
+                    SectionReport(
+                      activityController: activityController,
+                      date: date,
+                      nameController: nameController,
+                      reportController: reportController,
+                      venueController: venueController,
                     ),
-                    const Text("     "),
-                    const Text("🙅🏻‍♀Absentees 🛑:"),
-                    const Text("     "),
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: membersList.value.length,
-                      itemBuilder: (context, index) {
-                        return !membersList.value[index].check
-                            ? membersList.value[index].reason == "No Reason"
-                                ? Text("❌${membersList.value[index].member}")
-                                : Text(
-                                    "❌${membersList.value[index].member} (${membersList.value[index].reason})",
-                                  )
-                            : const SizedBox();
-                      },
-                    ),
-                    const Text(" "),
-                    const Text(" Prepared by"),
-                    Text(nameController.text),
                     const SizedBox(
                       height: 20,
                     ),
@@ -270,18 +187,30 @@ class _SectionState extends State<Section> {
                         Expanded(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black),
+                              backgroundColor: Colors.black,
+                            ),
                             onPressed: () {
-                              _copyToClipboard(data);
+                              copyToClipboardSection(
+                                text: data,
+                                venueController: venueController,
+                                activityController: activityController,
+                                reportController: reportController,
+                                nameController: nameController,
+                                date: date,
+                              );
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Text copied to clipboard'),
+                                  content: Text(
+                                    'Text copied to clipboard',
+                                  ),
                                 ),
                               );
                             },
                             child: const Text(
                               "Copy",
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
@@ -291,7 +220,8 @@ class _SectionState extends State<Section> {
                         Expanded(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black),
+                              backgroundColor: Colors.black,
+                            ),
                             onPressed: () {
                               setState(() {
                                 data = "";
@@ -299,7 +229,9 @@ class _SectionState extends State<Section> {
                             },
                             child: const Text(
                               "Back",
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
@@ -310,64 +242,5 @@ class _SectionState extends State<Section> {
               ),
       ),
     );
-  }
-
-  void _copyToClipboard(String text) {
-    List<String> lines = [
-      '📃 Session Report',
-      '‎ ',
-      '📅 $date',
-      '⏰ Time : ${getSelectedTime()}',
-      '📍 Venue : ${venueController.text}',
-      '‎ ',
-      ' Batch : ${batchList[0].batch}'
-          '‎ ',
-      '🧑‍✈️Coordinators',
-      '‎ ',
-      '🧑‍💻${list[0].one}',
-      '👨‍💻${list[0].two}',
-      '-------------------------------------',
-      'Activity : ${activityController.text}',
-      '‎ ',
-      '${reportController.text} ',
-      '‎ ',
-      '🙋‍♂️Participants:',
-      '‎ ',
-    ];
-
-    for (int i = 0; i < membersList.value.length; i++) {
-      if (membersList.value[i].check == true) {
-        lines.add('✅ ${membersList.value[i].member}');
-      }
-    }
-
-    lines.addAll([
-      '‎ ',
-      '‎ ',
-      '🙅🏻‍♀Absentees 🛑:',
-      '‎ ',
-    ]);
-
-    for (int i = 0; i < membersList.value.length; i++) {
-      if (membersList.value[i].check == false) {
-        if (membersList.value[i].reason == "No Reason") {
-          lines.add('❌ ${membersList.value[i].member}');
-        } else {
-          lines.add(
-              '❌ ${membersList.value[i].member} (${membersList.value[i].reason})');
-        }
-      }
-    }
-    lines.addAll([
-      '‎ ',
-      '‎ ',
-      'Prepared by',
-      '‎ ',
-      '${nameController.text} ',
-    ]);
-
-    String finalText = lines.where((line) => line.isNotEmpty).join('\n');
-
-    Clipboard.setData(ClipboardData(text: finalText));
   }
 }

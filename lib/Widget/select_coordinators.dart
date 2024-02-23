@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:report/Functions/function.dart';
 import 'package:report/Models/model.dart';
@@ -127,7 +129,9 @@ class _SelectStateCoordinators extends State<SelectCoordinators> {
               },
               child: const Text(
                 "Add",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
               ),
             ),
           )

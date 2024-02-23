@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:report/Functions/function.dart';
@@ -18,7 +20,9 @@ class AddMembersScreen extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            style: TextButton.styleFrom(backgroundColor: Colors.black),
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.black,
+            ),
             onPressed: () async {
               if (batchController.text.isNotEmpty &&
                   membersList.value.length >= 2) {
@@ -55,7 +59,9 @@ class AddMembersScreen extends StatelessWidget {
             },
             child: const Text(
               "Add",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
           ),
           const SizedBox(
@@ -64,13 +70,17 @@ class AddMembersScreen extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 15,
+        ),
         child: Column(
           children: [
             TextField(
               controller: batchController,
               decoration: const InputDecoration(
-                label: Text("Batch"),
+                label: Text(
+                  "Batch",
+                ),
               ),
             ),
             const SizedBox(
@@ -79,7 +89,11 @@ class AddMembersScreen extends StatelessWidget {
             Expanded(
               child: ValueListenableBuilder(
                 valueListenable: membersList,
-                builder: (context, value, child) {
+                builder: (
+                  context,
+                  value,
+                  child,
+                ) {
                   return ListView.builder(
                     itemCount: membersList.value.length,
                     itemBuilder: (context, index) {
@@ -144,7 +158,9 @@ class AddMembersScreen extends StatelessWidget {
                       refresh();
                       addController.clear();
                     }
-                    FocusScope.of(context).requestFocus(FocusNode());
+                    FocusScope.of(context).requestFocus(
+                      FocusNode(),
+                    );
                   },
                   icon: const CircleAvatar(
                     backgroundColor: Colors.black,

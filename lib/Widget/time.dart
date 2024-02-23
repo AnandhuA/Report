@@ -44,14 +44,20 @@ class _TimePickerWidegtState extends State<TimePickerWidegt> {
       children: [
         Text(
           "Pick your time ${hour.toString().padLeft(2, '0')} : ${min.toString().padLeft(2, '0')} $timeFormat",
-          style: const TextStyle(fontSize: 20),
+          style: const TextStyle(
+            fontSize: 20,
+          ),
         ),
         const SizedBox(
           height: 10,
         ),
         Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30),
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          margin: const EdgeInsets.symmetric(
+            horizontal: 30,
+          ),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+          ),
           width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.black12,

@@ -160,7 +160,9 @@ class _EditScreenState extends State<EditScreen> {
                 },
                 child: const Text(
                   "Add",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
